@@ -1,5 +1,6 @@
 package com.company.Model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -7,10 +8,6 @@ import java.util.List;
 public class Thief implements Runnable{
     private BackPack backPack;
     private House house;
-
-    public Thief() {
-        backPack = new BackPack(300);
-    }
 
     public Thief(House house) {
         this.house = house;
@@ -27,40 +24,40 @@ public class Thief implements Runnable{
 
     //Воровать может только один вор
     public synchronized void steal(){
-      /*  while(!house.isIs_free()||(house.home_stuffs.isEmpty())){
-            try {
-                //System.out.println("UNDER wAIT");
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        synchronized (house) {
+            if (!house.isIs_free() || house.getHome_stuffs().isEmpty()) {
+                try {
+                    house.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-        }*/
-        /*List<Stuff> homeStuffs = house.get();
-        Collections.sort(homeStuffs, new Comparator<Stuff>() {
+        }
+        house.setIs_free(false);
+
+        List<Stuff> stuffsForStealing = new ArrayList<>(house.getHome_stuffs());
+        Collections.sort(stuffsForStealing, new Comparator<Stuff>() {
             public int compare(Stuff o1, Stuff o2) {
                 return o2.getPrice() - o1.getPrice();
             }
         });
+        System.out.println("STEAL SUFF " + stuffsForStealing);
 
-        for (Stuff stuff: homeStuffs) {
+        for (Stuff stuff: stuffsForStealing) {
             if (!backPack.setStuff(stuff)) break;
-            homeStuffs.remove(stuff);
+            house.getHome_stuffs().remove(stuff);
             System.out.println("STEAL " + stuff);
-        }*/
-
-        if (!house.isIs_free()||house.getHome_stuffs().isEmpty()) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
-        System.out.println("STEAL " + house.getHome_stuffs());
-        notify();
+        house.setIs_free(true);
+        synchronized (house) {
+            house.notify();
+        }
     }
 
     @Override
     public void run() {
+        String name = Thread.currentThread().getName();
+        System.out.println(name + " стартовал вор");
         this.steal();
     }
 }

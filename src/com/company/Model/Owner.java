@@ -7,6 +7,9 @@ public class Owner implements Runnable{
     private List<Stuff> stuffs = new ArrayList<>();
     private House house;
 
+    public Owner() {
+    }
+
     public Owner(House house) {
         this.house = house;
         for(int i =0;i<10;i++){
@@ -14,8 +17,6 @@ public class Owner implements Runnable{
         }
     }
 
-    public Owner() {
-    }
 
     public Owner(List<Stuff> stuffs) {
         this.stuffs = stuffs;
@@ -30,27 +31,32 @@ public class Owner implements Runnable{
     }
 
     //Внести вещи в квартиру
-    public synchronized void deployStuffs(){
-        while(!house.isIs_free()){
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+    public void deployStuffs(){
+        String name = Thread.currentThread().getName();
+        try {
+            synchronized (house){
+                while(!house.isIs_free()) {
+                    house.wait();
+                }
+                house.setIs_free(false);
+                for (Stuff stuff: stuffs) {
+                    house.addStuff(stuff);
+                    System.out.println(name + " : " + stuff);
+                }
+                house.setIs_free(true);
+                synchronized (house) {
+                    house.notify();
+                }
             }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        house.setIs_free(false);
-
-        for (Stuff stuff: stuffs) {
-            house.addStuff(stuff);
-            System.out.println(stuff);
-        }
-
-        house.setIs_free(true);
-        notifyAll();
     }
 
     @Override
     public void run() {
+        String name = Thread.currentThread().getName();
+        System.out.println(name + " стартовал хозяин");
         this.deployStuffs();
     }
 }

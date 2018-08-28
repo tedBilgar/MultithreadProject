@@ -19,7 +19,7 @@ public class House {
         this.home_stuffs = home_stuffs;
     }
 
-    public void addStuff(Stuff stuff){
+    public  void addStuff(Stuff stuff){
         home_stuffs.add(stuff);
     }
 
