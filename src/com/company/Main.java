@@ -14,6 +14,8 @@ public class Main {
     public static void main(String[] args) {
         House house = new House();
         Owner owner = new Owner(house);
+        Owner owner3 = new Owner(house);
+        Owner owner4 = new Owner(house);
         Owner owner2 = new Owner(house);
         Thief thief = new Thief(house);
         Thief thief2 = new Thief(house);
@@ -21,6 +23,8 @@ public class Main {
         Thief thief4 = new Thief(house);
 
         new Thread(owner).start();
+        new Thread(owner3).start();
+        new Thread(owner4).start();
         new Thread(owner2).start();
         new Thread(thief).start();
         new Thread(thief2).start();
