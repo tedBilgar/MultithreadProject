@@ -8,9 +8,6 @@ public class BackPack {
     private int limit_weight;
     private int current_weight;
 
-    public BackPack() {
-        stuffs = new ArrayList<>();
-    }
 
     public BackPack(int limit_weight) {
         stuffs = new ArrayList<>();

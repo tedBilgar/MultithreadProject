@@ -8,16 +8,15 @@ public class House {
     private boolean is_free = true;
     private boolean is_owner = false;
 
+    public House() {
+        home_stuffs = new ArrayList<>();
+    }
     public boolean isIs_owner() {
         return is_owner;
     }
 
     public void setIs_owner(boolean is_owner) {
         this.is_owner = is_owner;
-    }
-
-    public House() {
-        home_stuffs = new ArrayList<>();
     }
 
     public List<Stuff> getHome_stuffs() {

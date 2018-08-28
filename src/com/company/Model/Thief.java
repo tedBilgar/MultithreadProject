@@ -14,14 +14,6 @@ public class Thief implements Runnable{
         backPack = new BackPack(300);
     }
 
-    public BackPack getBackPack() {
-        return backPack;
-    }
-
-    public void setBackPack(BackPack backPack) {
-        this.backPack = backPack;
-    }
-
     //Воровать может только один вор
     public synchronized void steal(){
         String name = Thread.currentThread().getName();

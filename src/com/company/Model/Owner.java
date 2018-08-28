@@ -17,19 +17,6 @@ public class Owner implements Runnable{
         }
     }
 
-
-    public Owner(List<Stuff> stuffs) {
-        this.stuffs = stuffs;
-    }
-
-    public List<Stuff> getStuffs() {
-        return stuffs;
-    }
-
-    public void setStuffs(List<Stuff> stuffs) {
-        this.stuffs = stuffs;
-    }
-
     //Внести вещи в квартиру
     public void deployStuffs(){
         String name = Thread.currentThread().getName();
