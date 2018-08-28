@@ -8,27 +8,26 @@ import java.util.List;
 public class SearchManager {
     public List<Stuff> getOptima(List<Stuff> stuffs, int maxWeight){
         List<Stuff> stealedStuffAll = new ArrayList<>(stuffs);
-
-        // отсортировали по весу
-        Collections.sort(stealedStuffAll, new Comparator<Stuff>() {
-            public int compare(Stuff o1, Stuff o2) {
-                return o2.getWeight() - o1.getWeight();
-            }
-        });
+        System.out.println("Будем воровать : " +stealedStuffAll);
 
         int maxSumAll = 0;
         List<Stuff> optimalStuff = new ArrayList<>();
 
         for(int i = 0;i<stealedStuffAll.size();i++){
+            if(stealedStuffAll.get(i).getWeight()>maxWeight) continue;
+
             List<Stuff> stealedStuffLevel = levelSearch(stealedStuffAll,i,maxWeight);
+            //System.out.println("взяли " + stealedStuffLevel);
             int levelSum = 0;
             for (Stuff stuff: stealedStuffLevel) {
                 levelSum += stuff.getPrice();
             }
             if (levelSum>maxSumAll){
+                maxSumAll = levelSum;
                 optimalStuff.clear();
-                optimalStuff.add((Stuff) stealedStuffLevel);
+                optimalStuff.addAll(stealedStuffLevel);
             }
+            //System.out.println("now optima is " + optimalStuff);
         }
         return optimalStuff;
     }
@@ -49,6 +48,9 @@ public class SearchManager {
             curWeight = 0;
 
             lastPoint = branchSearch(stealedStuffAll,bufferList,index,lastPoint,maxWeight);
+            System.out.println("MAS " + bufferList);
+            System.out.println("GIVE " + lastPoint);
+            //System.out.println("взяли ветку" + bufferList + " " + lastPoint );
 
             currLevelSearch.clear();
             currLevelSearch.addAll(bufferList);
@@ -61,7 +63,7 @@ public class SearchManager {
                 levelSearchOptimal.clear();
                 levelSearchOptimal.addAll(currLevelSearch);
             }
-
+            //System.out.println("run there");
         }
         return levelSearchOptimal;
     }
@@ -76,19 +78,24 @@ public class SearchManager {
         curSum += stealedStuffAll.get(index).getPrice();
 
         for(int i = index2; i<stealedStuffAll.size();i++){
-            if(maxWeight >= curWeight+stealedStuffAll.get(i).getWeight()) {
+            //System.out.println(" I " + i);
+
+            if(maxWeight >= curWeight + stealedStuffAll.get(i).getWeight()) {
                 bufferList.add(stealedStuffAll.get(i));
                 curWeight += stealedStuffAll.get(i).getWeight();
                 curSum += stealedStuffAll.get(i).getPrice();
                 lastPoint = i+1;
+                //System.out.println("LAST POINT: " + lastPoint);
             }else{
-                i++;
+                lastPoint = i+1;
             }
-        }
 
+        }
         if (lastPoint>=stealedStuffAll.size()){
             lastPoint = -1;
         }
+        //System.out.println("T " + bufferList);
+        //System.out.println("LAST POINT: " + lastPoint);
         return lastPoint;
     }
 }

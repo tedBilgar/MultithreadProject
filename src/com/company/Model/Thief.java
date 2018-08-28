@@ -8,10 +8,12 @@ import java.util.List;
 public class Thief implements Runnable{
     private BackPack backPack;
     private House house;
+    private SearchManager searchManager;
 
     public Thief(House house) {
         this.house = house;
         backPack = new BackPack(300);
+        searchManager = new SearchManager();
     }
 
     //Воровать может только один вор
@@ -35,11 +37,11 @@ public class Thief implements Runnable{
 
             Collections.sort(stuffsForStealing, new Comparator<Stuff>() {
                 public int compare(Stuff o1, Stuff o2) {
-                    return o2.getPrice() - o1.getPrice();
+                    return o2.getWeight() - o1.getWeight();
                 }
             });
 
-            System.out.println("STEALING STUFFS: " + stuffsForStealing);
+            /*System.out.println("STEALING STUFFS: " + stuffsForStealing);
 
             for (Stuff stuff : stuffsForStealing) {
                 if (!backPack.setStuff(stuff)) break;
@@ -47,6 +49,11 @@ public class Thief implements Runnable{
                 System.out.println(name + " : STEALS " + stuff);
             }
             System.out.println("AFTER STEALING by" + name + " : " + house.getHome_stuffs());
+*/
+            System.out.println("STEALING STUFFS: " + stuffsForStealing);
+            System.out.println("Stealed stuff : " + searchManager.getOptima(stuffsForStealing,100));
+            house.getHome_stuffs().removeAll(searchManager.getOptima(stuffsForStealing,100));
+
             house.setIs_free(true);
 
             house.notify();
