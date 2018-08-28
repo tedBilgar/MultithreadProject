@@ -4,7 +4,6 @@ public class Stuff {
     private int weight;
     private int price;
 
-
     public Stuff(int weight, int price) {
         this.weight = weight;
         this.price = price;
