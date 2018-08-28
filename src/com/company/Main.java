@@ -10,19 +10,21 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
+        int ownerCount = 0;
+        int thiefCount = 0;
+        for (String str: args) {
+            ownerCount = Integer.parseInt(args[0]);
+            thiefCount = Integer.parseInt(args[1]);
+        }
         House house = new House();
-        Owner owner = new Owner(house);
-        Owner owner1 = new Owner(house);
-        Owner owner2 = new Owner(house);
-        Owner owner3 = new Owner(house);
-        Thief thief = new Thief(house);
 
+        for (int i = 0; i<ownerCount;i++){
+            new Thread(new Owner(house)).start();
+        }
+        for (int i = 0; i<thiefCount;i++){
+            new Thread(new Thief(house)).start();
+        }
 
-        new Thread(owner).start();
-        new Thread(owner1).start();
-        new Thread(owner2).start();
-        new Thread(owner3).start();
-        new Thread(thief).start();
 
     }
 
