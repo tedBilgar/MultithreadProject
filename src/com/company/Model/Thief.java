@@ -34,7 +34,7 @@ public class Thief implements Runnable{
             }
         }
         house.setIs_free(false);
-
+        house.setIs_owner(false);
         List<Stuff> stuffsForStealing = new ArrayList<>(house.getHome_stuffs());
         Collections.sort(stuffsForStealing, new Comparator<Stuff>() {
             public int compare(Stuff o1, Stuff o2) {

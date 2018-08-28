@@ -34,20 +34,22 @@ public class Owner implements Runnable{
     public void deployStuffs(){
         String name = Thread.currentThread().getName();
         try {
-            synchronized (house){
-                while(!house.isIs_free()) {
+            //synchronized (house){
+                while(!house.isIs_free()&&!house.isIs_owner()) {
                     house.wait();
                 }
                 house.setIs_free(false);
+                house.setIs_owner(true);
                 for (Stuff stuff: stuffs) {
                     house.addStuff(stuff);
                     System.out.println(name + " : " + stuff);
                 }
                 house.setIs_free(true);
+                house.setIs_owner(false);
                 synchronized (house) {
                     house.notify();
                 }
-            }
+            //}
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
