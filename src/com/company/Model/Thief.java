@@ -41,18 +41,17 @@ public class Thief implements Runnable{
                 }
             });
 
-            /*System.out.println("STEALING STUFFS: " + stuffsForStealing);
-
-            for (Stuff stuff : stuffsForStealing) {
-                if (!backPack.setStuff(stuff)) break;
-                house.getHome_stuffs().remove(stuff);
-                System.out.println(name + " : STEALS " + stuff);
-            }
-            System.out.println("AFTER STEALING by" + name + " : " + house.getHome_stuffs());
-*/
+            //TODO
             System.out.println("STEALING STUFFS: " + stuffsForStealing);
-            System.out.println("Stealed stuff : " + searchManager.getOptima(stuffsForStealing,100));
-            house.getHome_stuffs().removeAll(searchManager.getOptima(stuffsForStealing,100));
+            //System.out.println("Stealed stuff : " + searchManager.getOptima(stuffsForStealing,100));
+            //house.getHome_stuffs().removeAll(searchManager.getOptima(stuffsForStealing,100));
+
+            //Эмитация работы вора
+            for (Stuff stuff: searchManager.getOptima(stuffsForStealing,100)) {
+                house.getHome_stuffs().remove(stuff);
+                System.out.println(name + " stealed : " + stuff);
+            }
+
 
             house.setIs_free(true);
 
