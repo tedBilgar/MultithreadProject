@@ -16,9 +16,15 @@ public class Main {
         Owner owner = new Owner(house);
         Owner owner2 = new Owner(house);
         Thief thief = new Thief(house);
+        Thief thief2 = new Thief(house);
+        Thief thief3 = new Thief(house);
+        Thief thief4 = new Thief(house);
 
         new Thread(owner).start();
         new Thread(owner2).start();
         new Thread(thief).start();
+        new Thread(thief2).start();
+        new Thread(thief3).start();
+        new Thread(thief4).start();
     }
 }

@@ -24,32 +24,39 @@ public class Thief implements Runnable{
 
     //Воровать может только один вор
     public synchronized void steal(){
+        String name = Thread.currentThread().getName();
+
         synchronized (house) {
-            if (!house.isIs_free() || house.getHome_stuffs().isEmpty()) {
+            while (!house.isIs_free() || house.getHome_stuffs().isEmpty()) {
                 try {
                     house.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-        }
-        house.setIs_free(false);
-        house.setIs_owner(false);
-        List<Stuff> stuffsForStealing = new ArrayList<>(house.getHome_stuffs());
-        Collections.sort(stuffsForStealing, new Comparator<Stuff>() {
-            public int compare(Stuff o1, Stuff o2) {
-                return o2.getPrice() - o1.getPrice();
-            }
-        });
-        System.out.println("STEAL SUFF " + stuffsForStealing);
 
-        for (Stuff stuff: stuffsForStealing) {
-            if (!backPack.setStuff(stuff)) break;
-            house.getHome_stuffs().remove(stuff);
-            System.out.println("STEAL " + stuff);
-        }
-        house.setIs_free(true);
-        synchronized (house) {
+            // Выставляем замки для критической зоны
+            house.setIs_free(false);
+            house.setIs_owner(false);
+            //локальная коллекция для отсортированной коллекции вора
+            List<Stuff> stuffsForStealing = new ArrayList<>(house.getHome_stuffs());
+
+            Collections.sort(stuffsForStealing, new Comparator<Stuff>() {
+                public int compare(Stuff o1, Stuff o2) {
+                    return o2.getPrice() - o1.getPrice();
+                }
+            });
+
+            System.out.println("STEALING STUFFS: " + stuffsForStealing);
+
+            for (Stuff stuff : stuffsForStealing) {
+                if (!backPack.setStuff(stuff)) break;
+                house.getHome_stuffs().remove(stuff);
+                System.out.println(name + " : STEALS " + stuff);
+            }
+            System.out.println("AFTER STEALING by" + name + " : " + house.getHome_stuffs());
+            house.setIs_free(true);
+
             house.notify();
         }
     }
