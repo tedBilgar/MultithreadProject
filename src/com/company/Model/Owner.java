@@ -18,10 +18,6 @@ public class Owner implements Runnable{
     public Owner(House house) {
         this.house = house;
 
-        for(int i =0;i<30;i++){
-            stuffs.add(new Stuff((int)(Math.random()*(100-10+1)+10),(int) (Math.random()*(100-10+1))+10));
-        }
-
     }
 
     //Внести вещи в квартиру
@@ -64,6 +60,18 @@ public class Owner implements Runnable{
     public void run() {
         String name = Thread.currentThread().getName();
         System.out.println(name + " стартовал хозяин");
-        this.deployStuffs();
+
+        while(true) {
+            for (int i = 0; i < 10; i++) {
+                stuffs.add(new Stuff((int) (Math.random() * (100 - 10 + 1) + 10), (int) (Math.random() * (100 - 10 + 1)) + 10));
+            }
+            this.deployStuffs();
+
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

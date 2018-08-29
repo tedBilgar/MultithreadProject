@@ -68,6 +68,15 @@ public class Thief implements Runnable{
     public void run() {
         String name = Thread.currentThread().getName();
         System.out.println(name + " стартовал вор");
-        this.steal();
+
+        while(true) {
+            this.steal();
+
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
