@@ -9,10 +9,18 @@ public class Thief implements Runnable{
     private BackPack backPack;
     private House house;
     private SearchManager searchManager;
-    private int limitWeight = 300;
+    private int limitWeight;
 
     public Thief(House house) {
         this.house = house;
+        limitWeight = 100;
+        backPack = new BackPack(limitWeight);
+        searchManager = new SearchManager();
+    }
+    public Thief(House house,int limitWeight) {
+        this.house = house;
+        this.limitWeight = limitWeight;
+        limitWeight = 100;
         backPack = new BackPack(limitWeight);
         searchManager = new SearchManager();
     }
