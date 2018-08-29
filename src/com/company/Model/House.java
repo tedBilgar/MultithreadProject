@@ -9,19 +9,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class House {
     private List<Stuff> home_stuffs;
     private boolean is_free = true;
-    private boolean is_thief;
-    private int curOnwerCount;
-    private AtomicInteger atomicInteger;
+    private AtomicInteger ownerCounter;
     private AtomicBoolean is_owner;
-    private AtomicBoolean is_thief2;
+    private AtomicBoolean is_thief;
 
     public House() {
         home_stuffs = Collections.synchronizedList(new ArrayList<>());
-        curOnwerCount = 0;
-        atomicInteger = new AtomicInteger();
-        atomicInteger.set(0);
+        ownerCounter = new AtomicInteger();
+        ownerCounter.set(0);
         is_owner = new AtomicBoolean(false);
-        is_thief2 = new AtomicBoolean(false);
+        is_thief = new AtomicBoolean(false);
     }
 
     public List<Stuff> getHome_stuffs() {
@@ -44,44 +41,29 @@ public class House {
         this.is_free = is_free;
     }
 
-    public boolean Is_thief() {
-        return is_thief;
+
+
+    public AtomicInteger getOwnerCounter() {
+        return ownerCounter;
     }
 
-    public void setIs_thief(boolean is_thief) {
-        this.is_thief = is_thief;
+    public void setOwnerCounter(AtomicInteger atomicInteger) {
+        this.ownerCounter = atomicInteger;
     }
 
-    public int setAndGetOnwerCount (boolean is_up ) {
-        if (is_up) curOnwerCount++;
-        else curOnwerCount--;
-        return curOnwerCount;
-    }
-    public int getCurOnwerCount(){
-        return curOnwerCount;
-    }
-
-    public AtomicInteger getAtomicInteger() {
-        return atomicInteger;
-    }
-
-    public void setAtomicInteger(AtomicInteger atomicInteger) {
-        this.atomicInteger = atomicInteger;
-    }
-
-    public AtomicBoolean getAtomicBoolean() {
+    public AtomicBoolean getIs_owner() {
         return is_owner;
     }
 
-    public void setAtomicBoolean(AtomicBoolean atomicBoolean) {
+    public void setIs_owner(AtomicBoolean atomicBoolean) {
         this.is_owner = atomicBoolean;
     }
 
-    public AtomicBoolean getIs_thief2() {
-        return is_thief2;
+    public AtomicBoolean getIs_thief() {
+        return is_thief;
     }
 
-    public void setIs_thief2(AtomicBoolean is_thief2) {
-        this.is_thief2 = is_thief2;
+    public void setIs_thief(AtomicBoolean is_thief2) {
+        this.is_thief = is_thief2;
     }
 }

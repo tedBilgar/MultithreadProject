@@ -29,41 +29,37 @@ public class Thief implements Runnable{
     //Воровать может только один вор
     public synchronized void steal(){
         String name = Thread.currentThread().getName();
-        AtomicBoolean atomicBoolean = new AtomicBoolean();
-        synchronized (house) {
-            while (house.getAtomicBoolean().get() || house.getHome_stuffs().isEmpty()) {
-                try {
+
+        while(house.getIs_owner().get()|| house.getIs_thief().get() || house.getHome_stuffs().isEmpty()){
+            try {
+                synchronized (house) {
                     house.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-            System.out.println("STARTING TO STEAL ");
-            // Выставляем замки для критической зоны
-            house.getIs_thief2().set(true);
-            //house.setIs_owner(false);
-            //локальная коллекция для отсортированной коллекции вора
-            List<Stuff> stuffsForStealing = new ArrayList<>(house.getHome_stuffs());
-            System.out.println("STEALING STUFFS: " + stuffsForStealing);
+        }
 
-            Collections.sort(stuffsForStealing, new Comparator<Stuff>() {
-                public int compare(Stuff o1, Stuff o2) {
-                    return o2.getWeight() - o1.getWeight();
-                }
-            });
+        house.getIs_thief().set(true);
 
-            //TODO
+        List<Stuff> stuffsForStealing = Collections.synchronizedList(new ArrayList<>(house.getHome_stuffs()));
 
-            //Эмитация работы вора
-            for (Stuff stuff: searchManager.getOptima(stuffsForStealing,limitWeight)) {
-                if(!backPack.setStuff(stuff)) break;
-                house.getHome_stuffs().remove(stuff);
-                System.out.println(name + " is stealing : " + stuff);
+        Collections.sort(stuffsForStealing, new Comparator<Stuff>() {
+            public int compare(Stuff o1, Stuff o2) {
+                return o2.getWeight() - o1.getWeight();
             }
+        });
 
+        //Эмитация работы вора
+        for (Stuff stuff: searchManager.getOptima(stuffsForStealing,limitWeight)) {
+            if(!backPack.setStuff(stuff)) break;
+            house.getHome_stuffs().remove(stuff);
+            System.out.println(name + " is stealing : " + stuff);
+        }
 
-            house.setIs_thief(false);
+        house.getIs_thief().set(false);
 
+        synchronized (house){
             house.notify();
         }
     }
