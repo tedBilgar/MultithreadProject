@@ -2,21 +2,23 @@ package com.company.Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class House {
     private List<Stuff> home_stuffs;
     private boolean is_free = true;
-    private boolean is_owner = false;
+    private boolean is_thief;
+    private int curOnwerCount;
+    private AtomicInteger atomicInteger;
+    private AtomicBoolean is_owner;
 
     public House() {
         home_stuffs = new ArrayList<>();
-    }
-    public boolean Is_owner() {
-        return is_owner;
-    }
-
-    public void setIs_owner(boolean is_owner) {
-        this.is_owner = is_owner;
+        curOnwerCount = 0;
+        atomicInteger = new AtomicInteger();
+        atomicInteger.set(0);
+        is_owner = new AtomicBoolean(false);
     }
 
     public List<Stuff> getHome_stuffs() {
@@ -37,5 +39,38 @@ public class House {
 
     public void setIs_free(boolean is_free) {
         this.is_free = is_free;
+    }
+
+    public boolean Is_thief() {
+        return is_thief;
+    }
+
+    public void setIs_thief(boolean is_thief) {
+        this.is_thief = is_thief;
+    }
+
+    public int setAndGetOnwerCount (boolean is_up ) {
+        if (is_up) curOnwerCount++;
+        else curOnwerCount--;
+        return curOnwerCount;
+    }
+    public int getCurOnwerCount(){
+        return curOnwerCount;
+    }
+
+    public AtomicInteger getAtomicInteger() {
+        return atomicInteger;
+    }
+
+    public void setAtomicInteger(AtomicInteger atomicInteger) {
+        this.atomicInteger = atomicInteger;
+    }
+
+    public AtomicBoolean getAtomicBoolean() {
+        return is_owner;
+    }
+
+    public void setAtomicBoolean(AtomicBoolean atomicBoolean) {
+        this.is_owner = atomicBoolean;
     }
 }

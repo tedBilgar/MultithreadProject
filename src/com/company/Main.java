@@ -22,9 +22,9 @@ public class Main {
         }
         House house = new House();
 
-        for (int i = 0; i<ownerCount;i++){
+        /*for (int i = 0; i<ownerCount;i++){
             new Thread(new Owner(house)).start();
-        }
+        }*/
         if (args[2] != null){
             for (int i = 0; i<thiefCount;i++){
                 new Thread(new Thief(house,Integer.parseInt(args[2]))).start();
@@ -33,6 +33,9 @@ public class Main {
             for (int i = 0; i < thiefCount; i++) {
                 new Thread(new Thief(house)).start();
             }
+        }
+        for (int i = 0; i<ownerCount;i++){
+            new Thread(new Owner(house)).start();
         }
     }
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Thief implements Runnable{
     private BackPack backPack;
@@ -28,9 +29,9 @@ public class Thief implements Runnable{
     //Воровать может только один вор
     public synchronized void steal(){
         String name = Thread.currentThread().getName();
-
+        AtomicBoolean atomicBoolean = new AtomicBoolean();
         synchronized (house) {
-            while (!house.Is_free() || house.getHome_stuffs().isEmpty()) {
+            while (house.getAtomicBoolean().get()) {
                 try {
                     house.wait();
                 } catch (InterruptedException e) {
@@ -39,8 +40,8 @@ public class Thief implements Runnable{
             }
 
             // Выставляем замки для критической зоны
-            house.setIs_free(false);
-            house.setIs_owner(false);
+            house.setIs_thief(true);
+            //house.setIs_owner(false);
             //локальная коллекция для отсортированной коллекции вора
             List<Stuff> stuffsForStealing = new ArrayList<>(house.getHome_stuffs());
 
@@ -61,7 +62,7 @@ public class Thief implements Runnable{
             }
 
 
-            house.setIs_free(true);
+            house.setIs_thief(false);
 
             house.notify();
         }
