@@ -14,9 +14,6 @@ import com.company.models.Thief;
 public class Main {
 
     public static void main(String[] args) {
-        int ownerCount = 0;
-        int thiefCount = 0;
-
         MainFactory mainFactory;
         House house = new House();
 
