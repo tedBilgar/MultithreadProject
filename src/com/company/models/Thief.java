@@ -10,15 +10,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class Thief implements Runnable, Functioning{
+public class Thief implements Runnable{
     private BackPack backPack;
     private House house;
     private SearchManager searchManager;
-    private int limitWeight;
 
     public Thief(House house,BackPack backPack,SearchManager searchManager){
         this.house = house;
-        this.limitWeight = limitWeight;
         this.backPack = backPack;
         this.searchManager = searchManager;
     }
@@ -27,6 +25,9 @@ public class Thief implements Runnable, Functioning{
     public synchronized void steal(){
         String name = Thread.currentThread().getName();
 
+        /*
+            потокозащищенные флаги на наличие хозев , другого вора или пустого дома
+         */
         while(house.getIs_owner().get()|| house.getIs_thief().get() || house.getHome_stuffs().isEmpty()){
             try {
                 synchronized (house) {
@@ -37,8 +38,11 @@ public class Thief implements Runnable, Functioning{
             }
         }
 
+        /*
+            Ставим флаг с дома на вора
+         */
         house.getIs_thief().set(true);
-
+        System.out.println("Пришел вор");
         List<Stuff> stuffsForStealing = Collections.synchronizedList(new ArrayList<>(house.getHome_stuffs()));
 
         Collections.sort(stuffsForStealing, new Comparator<Stuff>() {
@@ -47,15 +51,20 @@ public class Thief implements Runnable, Functioning{
             }
         });
 
-        //Эмитация работы вора
-        for (Stuff stuff: searchManager.getOptima(stuffsForStealing,limitWeight)) {
+        /*
+            getOptima функция нахождения самого оптимального списка с определенным весом рюкзака, заданным в параметрах
+         */
+        for (Stuff stuff: searchManager.getOptima(stuffsForStealing,backPack.getLimit_weight())) {
             if(!backPack.setStuff(stuff)) break;
             house.getHome_stuffs().remove(stuff);
             System.out.println(name + " is stealing : " + stuff);
         }
 
+        /*
+            Снятие флага вора и открытие входа для хозяев
+         */
         house.getIs_thief().set(false);
-
+        System.out.println("Ушел вор");
         synchronized (house){
             house.notify();
         }
@@ -77,8 +86,5 @@ public class Thief implements Runnable, Functioning{
         }
     }
 
-    @Override
-    public void toDoOwnJob() {
 
-    }
 }

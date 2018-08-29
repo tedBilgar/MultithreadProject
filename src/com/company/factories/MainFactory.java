@@ -1,12 +1,14 @@
 package com.company.factories;
 
 import com.company.Model.House;
-import com.company.models.Functioning;
 
 public abstract class MainFactory {
-    public void doSmth(){
 
+    public void start(House house){
+        Runnable entity = createEntity(house);
+        new Thread(entity).start();
     }
 
-    public abstract Functioning createEntity(House house);
+    public abstract Runnable createEntity(House house);
+
 }

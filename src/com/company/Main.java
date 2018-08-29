@@ -1,6 +1,9 @@
 package com.company;
 
 import com.company.Model.House;
+import com.company.factories.MainFactory;
+import com.company.factories.OwnerFactory;
+import com.company.factories.ThiefFactory;
 import com.company.models.Owner;
 import com.company.models.Thief;
 
@@ -13,26 +16,18 @@ public class Main {
     public static void main(String[] args) {
         int ownerCount = 0;
         int thiefCount = 0;
-        for (String str: args) {
-            ownerCount = Integer.parseInt(args[0]);
-            thiefCount = Integer.parseInt(args[1]);
-        }
+
+        MainFactory mainFactory;
         House house = new House();
 
-        /*for (int i = 0; i<ownerCount;i++){
-            new Thread(new Owner(house)).start();
-        }*/
-        if (args[2] != null){
-            for (int i = 0; i<thiefCount;i++){
-                new Thread(new Thief(house,Integer.parseInt(args[2]))).start();
-            }
-        }else {
-            for (int i = 0; i < thiefCount; i++) {
-                new Thread(new Thief(house)).start();
-            }
+        //создание хозяев
+        for(int i=0;i<Integer.parseInt(args[0]);i++){
+            mainFactory = new OwnerFactory();
+            mainFactory.start(house);
         }
-        for (int i = 0; i<ownerCount;i++){
-            new Thread(new Owner(house)).start();
+        for(int i=0;i<Integer.parseInt(args[1]);i++){
+            mainFactory = new ThiefFactory();
+            mainFactory.start(house);
         }
     }
 

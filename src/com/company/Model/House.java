@@ -15,6 +15,9 @@ public class House {
     private AtomicBoolean is_owner;
     private AtomicBoolean is_thief;
 
+    /*
+    Используются потокозащищенные поля: лист и флаги
+     */
     public House() {
         home_stuffs = Collections.synchronizedList(new ArrayList<>());
         ownerCounter = new AtomicInteger();

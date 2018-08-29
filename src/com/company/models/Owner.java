@@ -6,7 +6,7 @@ import com.company.lifelessModel.Stuff;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Owner implements Runnable, Functioning{
+public class Owner implements Runnable{
     private List<Stuff> stuffs = new ArrayList<>();
     private House house;
 
@@ -19,20 +19,37 @@ public class Owner implements Runnable, Functioning{
 
     //Внести вещи в квартиру
     public void deployStuffs(){
+        /*
+         Используются потокозащищенные поля: лист и флаги
+         */
         List<Stuff> threadSafeList = house.getHome_stuffs();
         String name = Thread.currentThread().getName();
 
         try {
+            /*
+                Закрывается проход хозяину, если флаг вора активен (флаг AtomicBoolean)
+             */
             while (house.getIs_thief().get()){
                 synchronized (house) {
                     house.wait();
                 }
             }
 
+            /*
+                Ставятся флаг, что зашел хозяин
+                getOwnerCounter - потокозащищенный integer для мониторинга количества вошедших хозяев в дом
+                в дальнейшем сможем отследить, когда ушел последний вышедный хозяин для закрытия флага хозяина
+                и открытия вора
+             */
             house.getIs_owner().set(true);
             house.getOwnerCounter().incrementAndGet();
             int i = 0;
 
+            /*
+                threadSafeList- потокозащищенный список, к тому же по док-ции oracle обрамляем synchronized для
+                атомарности работы со списком, если несколько хозяев в доме. НО сам дом доступен нескольким хозяинам,
+                лишь операция со списком синхронизирована
+             */
             for (Stuff stuff: stuffs) {
                 synchronized (threadSafeList) {
                     threadSafeList.add(stuff);
@@ -40,6 +57,10 @@ public class Owner implements Runnable, Functioning{
                 System.out.println(name + " " + (i++) + " : " + stuff);
             }
 
+            /*
+                мониторинг за вышедшими хозяинами
+                для того чтобы именно последний (а не 2ой) "выключил свет" - убрал флаг и открыл вход вору
+             */
             if(house.getOwnerCounter().compareAndSet(0,house.getOwnerCounter().decrementAndGet())) {
                 System.out.println("СПИСОК ПОСЛЕ ПЕРЕДАЧИ " + threadSafeList);
                 house.getIs_owner().set(false);
@@ -65,15 +86,11 @@ public class Owner implements Runnable, Functioning{
             this.deployStuffs();
 
             try {
-                Thread.sleep(500);
+                Thread.sleep(800);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    @Override
-    public void toDoOwnJob() {
-
-    }
 }
