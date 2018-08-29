@@ -11,7 +11,7 @@ public class House {
     public House() {
         home_stuffs = new ArrayList<>();
     }
-    public boolean isIs_owner() {
+    public boolean Is_owner() {
         return is_owner;
     }
 
@@ -31,7 +31,7 @@ public class House {
         home_stuffs.add(stuff);
     }
 
-    public boolean isIs_free() {
+    public boolean Is_free() {
         return is_free;
     }
 

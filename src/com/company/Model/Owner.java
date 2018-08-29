@@ -22,7 +22,7 @@ public class Owner implements Runnable{
         String name = Thread.currentThread().getName();
         try {
 
-            while(!house.isIs_free()&&!house.isIs_owner()) {
+            while(!house.Is_free()&&!house.Is_owner()) {
                 house.wait();
             }
             house.setIs_free(false);

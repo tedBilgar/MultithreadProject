@@ -9,10 +9,11 @@ public class Thief implements Runnable{
     private BackPack backPack;
     private House house;
     private SearchManager searchManager;
+    private int limitWeight = 300;
 
     public Thief(House house) {
         this.house = house;
-        backPack = new BackPack(300);
+        backPack = new BackPack(limitWeight);
         searchManager = new SearchManager();
     }
 
@@ -21,7 +22,7 @@ public class Thief implements Runnable{
         String name = Thread.currentThread().getName();
 
         synchronized (house) {
-            while (!house.isIs_free() || house.getHome_stuffs().isEmpty()) {
+            while (!house.Is_free() || house.getHome_stuffs().isEmpty()) {
                 try {
                     house.wait();
                 } catch (InterruptedException e) {
@@ -43,13 +44,12 @@ public class Thief implements Runnable{
 
             //TODO
             System.out.println("STEALING STUFFS: " + stuffsForStealing);
-            //System.out.println("Stealed stuff : " + searchManager.getOptima(stuffsForStealing,100));
-            //house.getHome_stuffs().removeAll(searchManager.getOptima(stuffsForStealing,100));
 
             //Эмитация работы вора
-            for (Stuff stuff: searchManager.getOptima(stuffsForStealing,100)) {
+            for (Stuff stuff: searchManager.getOptima(stuffsForStealing,limitWeight)) {
+                if(!backPack.setStuff(stuff)) break;
                 house.getHome_stuffs().remove(stuff);
-                System.out.println(name + " stealed : " + stuff);
+                System.out.println(name + " is stealing : " + stuff);
             }
 
 
