@@ -26,18 +26,21 @@ public class Owner implements Runnable{
 
     //Внести вещи в квартиру
     public void deployStuffs(){
-        List<Stuff> threadSafeList = Collections.synchronizedList(house.getHome_stuffs());
+        //List<Stuff> threadSafeList = Collections.synchronizedList(house.getHome_stuffs());
+        //List<Stuff> threadSafeList = Collections.synchronizedList(new ArrayList<>(house.getHome_stuffs()));
+        List<Stuff> threadSafeList = house.getHome_stuffs();
         String name = Thread.currentThread().getName();
         AtomicBoolean atomicBoolean = new AtomicBoolean();
-        //AtomicInteger atomicInteger = new AtomicInteger(0);
 
         try {
 
             /*while(atomicBoolean.compareAndSet(true,house.Is_thief())) {
                 house.wait();
             }*/
-            while (house.getAtomicBoolean().get()){
-                house.wait();
+            while (house.getIs_thief2().get()){
+                synchronized (house) {
+                    house.wait();
+                }
             }
             //house.setIs_free(false);
             //house.getAtomicInteger().getAndIncrement();
@@ -46,17 +49,24 @@ public class Owner implements Runnable{
             house.getAtomicInteger().incrementAndGet();
             //house.setIs_free(false);
             int i = 0;
+
             for (Stuff stuff: stuffs) {
-                threadSafeList.add(stuff);
+                if (stuff == null) System.out.println("-----------------------------------------------ЗДЕСЬ НУЛ ------------------");
+                synchronized (threadSafeList) {
+                    threadSafeList.add(stuff);
+                }
+                System.out.println("LOOK :" + threadSafeList.contains(stuff));
                 System.out.println(name + " " + (i++) + " : " + stuff);
             }
 
 
-            //System.out.println("COUNT " + house.getAtomicInteger().get());
+            System.out.println("COUNT " + house.getAtomicInteger().get());
             if(house.getAtomicInteger().compareAndSet(0,house.getAtomicInteger().decrementAndGet())) {
+                System.out.println("СПИСОК ПОСЛЕ ПЕРЕДАЧИ " + threadSafeList);
                 house.getAtomicBoolean().set(false);
                 synchronized (house) {
                     house.notify();
+                    System.out.println("ОТДАЛИ ");
                 }
             }
           /*  house.setIs_free(true);

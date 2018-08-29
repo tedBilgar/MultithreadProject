@@ -31,19 +31,20 @@ public class Thief implements Runnable{
         String name = Thread.currentThread().getName();
         AtomicBoolean atomicBoolean = new AtomicBoolean();
         synchronized (house) {
-            while (house.getAtomicBoolean().get()) {
+            while (house.getAtomicBoolean().get() || house.getHome_stuffs().isEmpty()) {
                 try {
                     house.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-
+            System.out.println("STARTING TO STEAL ");
             // Выставляем замки для критической зоны
-            house.setIs_thief(true);
+            house.getIs_thief2().set(true);
             //house.setIs_owner(false);
             //локальная коллекция для отсортированной коллекции вора
             List<Stuff> stuffsForStealing = new ArrayList<>(house.getHome_stuffs());
+            System.out.println("STEALING STUFFS: " + stuffsForStealing);
 
             Collections.sort(stuffsForStealing, new Comparator<Stuff>() {
                 public int compare(Stuff o1, Stuff o2) {
@@ -52,7 +53,6 @@ public class Thief implements Runnable{
             });
 
             //TODO
-            System.out.println("STEALING STUFFS: " + stuffsForStealing);
 
             //Эмитация работы вора
             for (Stuff stuff: searchManager.getOptima(stuffsForStealing,limitWeight)) {
