@@ -1,29 +1,26 @@
-package com.company.Model;
+package com.company.models;
+
+import com.company.Model.House;
+import com.company.Model.SearchManager;
+import com.company.lifelessModel.BackPack;
+import com.company.lifelessModel.Stuff;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Thief implements Runnable{
+public class Thief implements Runnable, Functioning{
     private BackPack backPack;
     private House house;
     private SearchManager searchManager;
     private int limitWeight;
 
-    public Thief(House house) {
-        this.house = house;
-        limitWeight = 100;
-        backPack = new BackPack(limitWeight);
-        searchManager = new SearchManager();
-    }
-    public Thief(House house,int limitWeight) {
+    public Thief(House house,BackPack backPack,SearchManager searchManager){
         this.house = house;
         this.limitWeight = limitWeight;
-        limitWeight = 100;
-        backPack = new BackPack(limitWeight);
-        searchManager = new SearchManager();
+        this.backPack = backPack;
+        this.searchManager = searchManager;
     }
 
     //Воровать может только один вор
@@ -78,5 +75,10 @@ public class Thief implements Runnable{
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void toDoOwnJob() {
+
     }
 }

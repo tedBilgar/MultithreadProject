@@ -1,11 +1,8 @@
 package com.company;
 
 import com.company.Model.House;
-import com.company.Model.Owner;
-import com.company.Model.Stuff;
-import com.company.Model.Thief;
-
-import java.util.*;
+import com.company.models.Owner;
+import com.company.models.Thief;
 
 /*
  The 1st arg is for a number of owners, the 2nd is for thiefs ones.

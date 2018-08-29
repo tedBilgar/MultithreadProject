@@ -1,4 +1,4 @@
-package com.company.Model;
+package com.company.lifelessModel;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,14 +1,12 @@
-package com.company.Model;
+package com.company.models;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+import com.company.Model.House;
+import com.company.lifelessModel.Stuff;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
-public class Owner implements Runnable{
+public class Owner implements Runnable, Functioning{
     private List<Stuff> stuffs = new ArrayList<>();
     private House house;
 
@@ -17,7 +15,6 @@ public class Owner implements Runnable{
 
     public Owner(House house) {
         this.house = house;
-
     }
 
     //Внести вещи в квартиру
@@ -73,5 +70,10 @@ public class Owner implements Runnable{
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void toDoOwnJob() {
+
     }
 }

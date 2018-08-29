@@ -1,4 +1,4 @@
-package com.company.Model;
+package com.company.lifelessModel;
 
 public class Stuff {
     private int weight;
