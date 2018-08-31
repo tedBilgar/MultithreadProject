@@ -22,12 +22,12 @@ public class Main {
 
         for(int i=0;i<Integer.parseInt(args[0]);i++){
             director.constructOwner(ownerBuilder,house);
-            Thread
-            ownerBuilder.getResult()
+            new Thread(ownerBuilder.getResult()).start();
         }
 
         for(int i=0;i<Integer.parseInt(args[1]);i++){
             director.constructThief(thiefBuilder,house);
+            new Thread(thiefBuilder.getResult()).start();
         }
     }
 

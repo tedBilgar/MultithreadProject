@@ -7,15 +7,26 @@ import com.company.models.Thief;
 
 public class ThiefBuilder implements Builder {
     private House house;
+    private BackPack backPack;
+    private SearchManager searchManager;
 
     @Override
     public void setHouse(House house) {
         this.house = house;
     }
 
-    //TODO
-    // Доделать создание рюкзака и менеджера
+    @Override
+    public void setItems() {
+        backPack = new BackPack(100);
+    }
+
+    @Override
+    public void setExtra() {
+        searchManager = new SearchManager();
+    }
+
+
     public Thief getResult(){
-        return new Thief(house,new BackPack(100),new SearchManager());
+        return new Thief(house,backPack,searchManager);
     }
 }
