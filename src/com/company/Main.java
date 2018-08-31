@@ -1,9 +1,9 @@
 package com.company;
 
 import com.company.Model.House;
-import com.company.factories.MainFactory;
-import com.company.factories.OwnerFactory;
-import com.company.factories.ThiefFactory;
+import com.company.building.Director;
+import com.company.building.OwnerBuilder;
+import com.company.building.ThiefBuilder;
 import com.company.models.Owner;
 import com.company.models.Thief;
 
@@ -14,19 +14,21 @@ import com.company.models.Thief;
 public class Main {
 
     public static void main(String[] args) {
-        MainFactory mainFactory;
         House house = new House();
+        Director director = new Director();
 
-        //создание хозяев
+        OwnerBuilder ownerBuilder = new OwnerBuilder();
+        ThiefBuilder thiefBuilder = new ThiefBuilder();
+
         for(int i=0;i<Integer.parseInt(args[0]);i++){
-            mainFactory = new OwnerFactory();
-            mainFactory.start(house);
+            director.constructOwner(ownerBuilder,house);
+            Thread
+            ownerBuilder.getResult()
         }
+
         for(int i=0;i<Integer.parseInt(args[1]);i++){
-            mainFactory = new ThiefFactory();
-            mainFactory.start(house);
+            director.constructThief(thiefBuilder,house);
         }
     }
-
 
 }
