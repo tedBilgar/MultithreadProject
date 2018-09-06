@@ -2,6 +2,7 @@ package com.company.models;
 
 import com.company.Model.House;
 import com.company.Model.SearchManager;
+import com.company.building.ThiefBuilder;
 import com.company.lifelessModel.BackPack;
 import com.company.lifelessModel.Stuff;
 
@@ -15,10 +16,10 @@ public class Thief implements Runnable{
     private House house;
     private SearchManager searchManager;
 
-    public Thief(House house,BackPack backPack,SearchManager searchManager){
-        this.house = house;
-        this.backPack = backPack;
-        this.searchManager = searchManager;
+    public Thief(ThiefBuilder thiefBuilder){
+        this.house = thiefBuilder.getHouse();
+        this.backPack = thiefBuilder.getBackPack();
+        this.searchManager = thiefBuilder.getSearchManager();
     }
 
     //Воровать может только один вор

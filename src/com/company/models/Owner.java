@@ -1,22 +1,22 @@
 package com.company.models;
 
 import com.company.Model.House;
+import com.company.building.OwnerBuilder;
+import com.company.lifelessModel.BackPack;
 import com.company.lifelessModel.Stuff;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Owner implements Runnable{
-    private List<Stuff> stuffs = new ArrayList<>();
+    //private List<Stuff> stuffs = new ArrayList<>();
+    private BackPack backPack;
     private House house;
 
-    public Owner() {
+    public Owner(OwnerBuilder ownerBuilder){
+        this.backPack = ownerBuilder.getBackPack();
+        this.house = ownerBuilder.getHouse();
     }
-
-    public Owner(House house) {
-        this.house = house;
-    }
-
     //Внести вещи в квартиру
     public void deployStuffs(){
         /*
@@ -50,7 +50,7 @@ public class Owner implements Runnable{
                 атомарности работы со списком, если несколько хозяев в доме. НО сам дом доступен нескольким хозяинам,
                 лишь операция со списком синхронизирована
              */
-            for (Stuff stuff: stuffs) {
+            for (Stuff stuff: backPack.getStuffs()) {
                 synchronized (threadSafeList) {
                     threadSafeList.add(stuff);
                 }
@@ -81,7 +81,7 @@ public class Owner implements Runnable{
 
         while(true) {
             for (int i = 0; i < 10; i++) {
-                stuffs.add(new Stuff((int) (Math.random() * (100 - 10 + 1) + 10), (int) (Math.random() * (100 - 10 + 1)) + 10));
+                backPack.setStuff(new Stuff((int) (Math.random() * (100 - 10 + 1) + 10), (int) (Math.random() * (100 - 10 + 1)) + 10));
             }
             this.deployStuffs();
 

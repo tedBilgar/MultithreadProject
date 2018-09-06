@@ -1,32 +1,32 @@
 package com.company.building;
 
 import com.company.Model.House;
-import com.company.lifelessModel.Stuff;
+import com.company.lifelessModel.BackPack;
 import com.company.models.Owner;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class OwnerBuilder implements Builder {
+public class OwnerBuilder implements Builder{
+    private BackPack backPack;
     private House house;
-    private List<Stuff> stuffs;
 
-    @Override
-    public void setHouse(House house) {
+    public BackPack getBackPack() {
+        return backPack;
+    }
+
+    public OwnerBuilder setBackPack(BackPack backPack) {
+        this.backPack = backPack;
+        return this;
+    }
+
+    public House getHouse() {
+        return house;
+    }
+
+    public OwnerBuilder setHouse(House house) {
         this.house = house;
+        return this;
     }
 
-    @Override
-    public void setItems() {
-        stuffs = new ArrayList<>();
-    }
-
-    @Override
-    public void setExtra() {
-        //Для хозяина нет дополнительных полей
-    }
-
-    public Owner getResult(){
-        return new Owner(house);
+    public Runnable build(){
+        return new Owner(this);
     }
 }

@@ -5,28 +5,39 @@ import com.company.Model.SearchManager;
 import com.company.lifelessModel.BackPack;
 import com.company.models.Thief;
 
-public class ThiefBuilder implements Builder {
-    private House house;
+public class ThiefBuilder {
     private BackPack backPack;
+    private House house;
     private SearchManager searchManager;
 
-    @Override
-    public void setHouse(House house) {
+    public BackPack getBackPack() {
+        return backPack;
+    }
+
+    public ThiefBuilder setBackPack(BackPack backPack) {
+        this.backPack = backPack;
+        return this;
+    }
+
+    public House getHouse() {
+        return house;
+    }
+
+    public ThiefBuilder setHouse(House house) {
         this.house = house;
+        return this;
     }
 
-    @Override
-    public void setItems() {
-        backPack = new BackPack(100);
+    public SearchManager getSearchManager() {
+        return searchManager;
     }
 
-    @Override
-    public void setExtra() {
-        searchManager = new SearchManager();
+    public ThiefBuilder setSearchManager(SearchManager searchManager) {
+        this.searchManager = searchManager;
+        return this;
     }
 
-
-    public Thief getResult(){
-        return new Thief(house,backPack,searchManager);
+    public Runnable build(){
+        return new Thief(this);
     }
 }

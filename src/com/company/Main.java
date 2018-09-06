@@ -4,6 +4,7 @@ import com.company.Model.House;
 import com.company.building.Director;
 import com.company.building.OwnerBuilder;
 import com.company.building.ThiefBuilder;
+import com.company.lifelessModel.BackPack;
 import com.company.models.Owner;
 import com.company.models.Thief;
 
@@ -14,21 +15,13 @@ import com.company.models.Thief;
 public class Main {
 
     public static void main(String[] args) {
-        House house = new House();
+        //Owner owner = new OwnerBuilder().setHouse(house).setBackPack(new BackPack(1000)).build();
+       // Thief thief = new ThiefBuilder().setHouse(house).setBackPack(new BackPack(300)).build();
+
         Director director = new Director();
 
-        OwnerBuilder ownerBuilder = new OwnerBuilder();
-        ThiefBuilder thiefBuilder = new ThiefBuilder();
-
-        for(int i=0;i<Integer.parseInt(args[0]);i++){
-            director.constructOwner(ownerBuilder,house);
-            new Thread(ownerBuilder.getResult()).start();
-        }
-
-        for(int i=0;i<Integer.parseInt(args[1]);i++){
-            director.constructThief(thiefBuilder,house);
-            new Thread(thiefBuilder.getResult()).start();
-        }
+        new Thread(director.buildOwner()).start();
+        new Thread(director.buildThief()).start();
     }
 
 }

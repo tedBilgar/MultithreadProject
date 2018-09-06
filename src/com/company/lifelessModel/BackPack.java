@@ -8,10 +8,15 @@ public class BackPack {
     private int limit_weight;
     private int current_weight;
 
+    public BackPack(){
+        this.limit_weight = -1;
+        this.current_weight = 0;
+    }
 
     public BackPack(int limit_weight) {
         stuffs = new ArrayList<>();
         this.limit_weight = limit_weight;
+        this.current_weight = 0;
     }
 
     public int getLimit_weight() {
@@ -23,6 +28,10 @@ public class BackPack {
     }
 
     public boolean setStuff(Stuff stuff){
+        if(limit_weight == -1) {
+            stuffs.add(stuff);
+            return true;
+        }
         if(current_weight+stuff.getWeight()<= limit_weight) {
             stuffs.add(stuff);
             current_weight+=stuff.getWeight();
@@ -30,5 +39,9 @@ public class BackPack {
         }else{
             return false;
         }
+    }
+
+    public List<Stuff> getStuffs() {
+        return stuffs;
     }
 }

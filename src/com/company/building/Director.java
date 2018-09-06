@@ -1,19 +1,18 @@
 package com.company.building;
 
 import com.company.Model.House;
-/*
-    Здесь мы можем (необязателен этот класс вообще для паттерна)
-    добавить порядок строительства объекта или осбенностей при его строительстве
- */
+import com.company.Model.SearchManager;
+import com.company.lifelessModel.BackPack;
+
 public class Director {
-    public void constructOwner(Builder builder,House house){
-        builder.setHouse(house);
-        builder.setItems();
+    House house = new House();
+
+    public Runnable buildOwner(){
+        return new OwnerBuilder().setHouse(house).setBackPack(new BackPack(1000)).build();
     }
 
-    public void constructThief(Builder builder,House house){
-        builder.setHouse(house);
-        builder.setItems();
-        builder.setExtra();
+    public Runnable buildThief(){
+        return new ThiefBuilder().setHouse(house).setBackPack(new BackPack(300))
+                .setSearchManager(new SearchManager()).build();
     }
 }
