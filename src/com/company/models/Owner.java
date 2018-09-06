@@ -8,7 +8,7 @@ import com.company.lifelessModel.Stuff;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Owner implements Runnable{
+public class Owner implements Runnable, Carrying{
     //private List<Stuff> stuffs = new ArrayList<>();
     private BackPack backPack;
     private House house;
@@ -72,6 +72,11 @@ public class Owner implements Runnable{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean toPack(Stuff stuff) {
+        return backPack.setStuff(stuff);
     }
 
 
