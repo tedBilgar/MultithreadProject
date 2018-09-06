@@ -79,14 +79,12 @@ public class Owner implements Runnable, Carrying{
         return backPack.setStuff(stuff);
     }
 
-
-
     @Override
     public void run() {
         String name = Thread.currentThread().getName();
         System.out.println(name + " стартовал хозяин");
-
-        while(true) {
+        this.deployStuffs();
+        /*while(true) {
             for (int i = 0; i < 10; i++) {
                 backPack.setStuff(new Stuff((int) (Math.random() * (100 - 10 + 1) + 10), (int) (Math.random() * (100 - 10 + 1)) + 10));
             }
@@ -97,7 +95,7 @@ public class Owner implements Runnable, Carrying{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 
 }

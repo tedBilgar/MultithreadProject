@@ -15,15 +15,23 @@ public class House {
     private AtomicBoolean is_owner;
     private AtomicBoolean is_thief;
 
+    private static House instance;
     /*
     Используются потокозащищенные поля: лист и флаги
      */
-    public House() {
+    private House() {
         home_stuffs = Collections.synchronizedList(new ArrayList<>());
         ownerCounter = new AtomicInteger();
         ownerCounter.set(0);
         is_owner = new AtomicBoolean(false);
         is_thief = new AtomicBoolean(false);
+    }
+
+    public static House getInstance(){
+        if(instance == null){
+            instance = new House();
+        }
+        return instance;
     }
 
     public List<Stuff> getHome_stuffs() {

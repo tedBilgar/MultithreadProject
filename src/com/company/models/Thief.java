@@ -56,7 +56,6 @@ public class Thief implements Runnable,Carrying{
             getOptima функция нахождения самого оптимального списка с определенным весом рюкзака, заданным в параметрах
          */
         for (Stuff stuff: searchManager.getOptima(stuffsForStealing,backPack.getLimit_weight())) {
-            //if(!backPack.setStuff(stuff)) break;
             if(!this.toPack(stuff)) break;
             house.getHome_stuffs().remove(stuff);
             System.out.println(name + " is stealing : " + stuff);
@@ -81,8 +80,8 @@ public class Thief implements Runnable,Carrying{
     public void run() {
         String name = Thread.currentThread().getName();
         System.out.println(name + " стартовал вор");
-
-        while(true) {
+        this.steal();
+        /*while(true) {
             this.steal();
 
             try {
@@ -90,7 +89,7 @@ public class Thief implements Runnable,Carrying{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 
 }

@@ -1,12 +1,14 @@
 package com.company.lifelessModel;
 
+import com.company.building.StuffBuilder;
+
 public class Stuff {
     private int weight;
     private int price;
 
-    public Stuff(int weight, int price) {
-        this.weight = weight;
-        this.price = price;
+    public Stuff(StuffBuilder stuffBuilder) {
+        this.weight = stuffBuilder.getWeight();
+        this.price = stuffBuilder.getPrice();
     }
 
     public int getWeight() {
