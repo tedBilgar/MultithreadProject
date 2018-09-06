@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class Thief implements Runnable{
+public class Thief implements Runnable,Carrying{
     private BackPack backPack;
     private House house;
     private SearchManager searchManager;
@@ -23,7 +23,7 @@ public class Thief implements Runnable{
     }
 
     //Воровать может только один вор
-    public synchronized void steal(){
+    public synchronized void toPack(){
         String name = Thread.currentThread().getName();
 
         /*
@@ -77,7 +77,7 @@ public class Thief implements Runnable{
         System.out.println(name + " стартовал вор");
 
         while(true) {
-            this.steal();
+            this.toPack();
 
             try {
                 Thread.sleep(100);
